@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="bn">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#173b2b">
+<link rel="manifest" href="manifest.webmanifest">
+<title>আল-বারাকাহ টেইলার্স</title>
+<style>
+:root{--bg:#f5f7f6;--card:#fff;--ink:#17302a;--muted:#6b7772;--brand:#173b2b;--accent:#c89b3c;--danger:#b42318;--line:#e4e9e6}
+*{box-sizing:border-box}body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Bengali","Noto Sans",sans-serif;background:var(--bg);color:var(--ink);padding-bottom:82px}
+header{background:linear-gradient(135deg,#173b2b,#245844);color:#fff;padding:20px 18px 24px;border-radius:0 0 24px 24px}
+.brand{display:flex;gap:12px;align-items:center}.logo{width:52px;height:52px;border-radius:14px;background:#fff2;border:1px solid #ffffff44;display:grid;place-items:center;font-size:24px}.brand h1{font-size:19px;margin:0}.brand p{margin:3px 0 0;color:#dce9e2;font-size:12px}
+main{padding:16px;max-width:760px;margin:auto}.section-title{display:flex;justify-content:space-between;align-items:center;margin:20px 0 10px}.section-title h2{font-size:17px;margin:0}.muted{color:var(--muted);font-size:13px}
+.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px;box-shadow:0 2px 10px #173b2b08}.stat b{font-size:24px;display:block}.stat span{font-size:12px;color:var(--muted)}
+.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}.btn{border:0;border-radius:14px;padding:13px 12px;font-size:14px;font-weight:650;background:var(--brand);color:white}.btn.secondary{background:#eaf0ed;color:var(--brand)}.btn.gold{background:var(--accent);color:#fff}.btn.danger{background:#fff0ee;color:var(--danger)}
+.list{display:flex;flex-direction:column;gap:9px}.row{display:flex;justify-content:space-between;gap:12px;align-items:center}.order-title{font-weight:700}.badge{display:inline-block;padding:4px 8px;border-radius:999px;background:#edf5f0;font-size:11px;color:var(--brand)}.badge.warn{background:#fff4db;color:#8a5b00}.badge.danger{background:#ffebe9;color:var(--danger)}
+.bottom{position:fixed;bottom:0;left:0;right:0;background:#fff;border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);padding:8px max(8px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));z-index:5}.nav{border:0;background:none;color:#68736f;font-size:11px}.nav.active{color:var(--brand);font-weight:700}
+input,select,textarea{width:100%;padding:12px;border:1px solid #d9e1dd;border-radius:12px;background:#fff;font:inherit;margin-top:6px}label{font-size:12px;color:#5f6b66;display:block;margin-top:11px}.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}.full{grid-column:1/-1}
+.modal{position:fixed;inset:0;background:#0007;display:none;align-items:flex-end;z-index:10}.modal.show{display:flex}.sheet{background:var(--bg);width:100%;max-height:92vh;overflow:auto;border-radius:24px 24px 0 0;padding:18px}.sheet-head{display:flex;justify-content:space-between;align-items:center}.x{border:0;background:#e8eeeb;border-radius:50%;width:36px;height:36px;font-size:20px}.preview{background:#fff;border-radius:16px;padding:16px;white-space:pre-wrap;border:1px solid var(--line)}
+.hidden{display:none!important}.search{margin:8px 0 12px}
+@media(min-width:600px){.grid{grid-template-columns:repeat(4,1fr)}.actions{grid-template-columns:repeat(4,1fr)}.modal{align-items:center}.sheet{max-width:680px;border-radius:24px}}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand"><div class="logo">✂️</div><div><h1 id="businessName">আল-বারাকাহ টেইলার্স</h1><p>Tailoring Management</p></div></div>
+</header>
+<main id="app"></main>
+<nav class="bottom">
+<button class="nav active" data-tab="home">⌂<br>হোম</button>
+<button class="nav" data-tab="orders">🧾<br>অর্ডার</button>
+<button class="nav" data-tab="customers">👤<br>কাস্টমার</button>
+<button class="nav" data-tab="more">☰<br>আরও</button>
+</nav>
+
+<div class="modal" id="modal"><div class="sheet" id="sheet"></div></div>
+
+<script>
+const KEY='abt_pwa_v1';
+let db=JSON.parse(localStorage.getItem(KEY)||'{"customers":[],"orders":[],"settings":{"business":"আল-বারাকাহ টেইলার্স","phone":""}}');
+const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
+const money=n=>'৳ '+Number(n||0).toLocaleString('en-BD');
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const today=()=>new Date().toISOString().slice(0,10);
+function orderNo(){return 'ABT-'+new Date().getFullYear()+'-'+String(db.orders.length+1).padStart(6,'0')}
+function modal(html){document.getElementById('sheet').innerHTML=html;document.getElementById('modal').classList.add('show')}
+function closeModal(){document.getElementById('modal').classList.remove('show')}
+document.getElementById('modal').addEventListener('click',e=>{if(e.target.id==='modal')closeModal()});
+
+function dashboard(){
+ const todayOrders=db.orders.filter(o=>o.orderDate===today()), due=db.orders.reduce((a,o)=>a+Math.max(0,o.due),0);
+ const deliveries=db.orders.filter(o=>o.deliveryDate===today()&&o.status!=='Delivered');
+ return `<div class="section-title"><h2>আজকের সারাংশ</h2><span class="muted">${today()}</span></div>
+ <div class="grid">
+  <div class="card stat"><b>${todayOrders.length}</b><span>আজকের অর্ডার</span></div>
+  <div class="card stat"><b>${db.orders.filter(o=>o.status==='Sewing').length}</b><span>সেলাই চলছে</span></div>
+  <div class="card stat"><b>${deliveries.length}</b><span>আজ ডেলিভারি</span></div>
+  <div class="card stat"><b>${money(due)}</b><span>মোট বাকি</span></div>
+ </div>
+ <div class="section-title"><h2>দ্রুত কাজ</h2></div>
+ <div class="actions"><button class="btn gold" onclick="newOrder()">+ নতুন অর্ডার</button><button class="btn secondary" onclick="newCustomer()">+ কাস্টমার</button><button class="btn secondary" onclick="render('orders')">অর্ডার দেখুন</button><button class="btn secondary" onclick="render('customers')">মাপ/কাস্টমার</button></div>
+ <div class="section-title"><h2>আজকের ডেলিভারি</h2></div>
+ <div class="list">${deliveries.length?deliveries.map(orderCard).join(''):'<div class="card muted">আজ কোনো ডেলিভারি নেই।</div>'}</div>`;
+}
+function orderCard(o){return `<div class="card"><div class="row"><div><div class="order-title">${esc(o.customerName)}</div><div class="muted">${esc(o.no)} · ${esc(o.items.join(' + '))}</div></div><span class="badge ${o.status==='Ready'?'warn':''}">${esc(o.status)}</span></div><div class="row" style="margin-top:10px"><span class="muted">ডেলিভারি: ${esc(o.deliveryDate)}</span><b>${money(o.due)} বাকি</b></div><div class="row" style="margin-top:10px"><button class="btn secondary" onclick="viewOrder('${o.id}')">দেখুন</button><button class="btn" onclick="shareOrder('${o.id}')">📤 পাঠান</button></div></div>`}
+function render(tab='home'){
+ document.querySelectorAll('.nav').forEach(x=>x.classList.toggle('active',x.dataset.tab===tab));
+ const app=document.getElementById('app');
+ if(tab==='home') app.innerHTML=dashboard();
+ if(tab==='orders') app.innerHTML=`<div class="section-title"><h2>অর্ডার</h2><button class="btn" onclick="newOrder()">+ নতুন</button></div><input class="search" placeholder="নাম / মোবাইল / অর্ডার নম্বর সার্চ" oninput="filterOrders(this.value)"><div id="orderList" class="list">${db.orders.slice().reverse().map(orderCard).join('')||'<div class="card muted">কোনো অর্ডার নেই।</div>'}</div>`;
+ if(tab==='customers') app.innerHTML=`<div class="section-title"><h2>কাস্টমার</h2><button class="btn" onclick="newCustomer()">+ নতুন</button></div><input class="search" placeholder="নাম বা মোবাইল সার্চ" oninput="filterCustomers(this.value)"><div id="customerList" class="list">${db.customers.slice().reverse().map(customerCard).join('')||'<div class="card muted">কোনো কাস্টমার নেই।</div>'}</div>`;
+ if(tab==='more') app.innerHTML=`<div class="section-title"><h2>আরও</h2></div><div class="actions"><button class="btn secondary" onclick="reports()">📊 রিপোর্ট</button><button class="btn secondary" onclick="settings()">⚙️ সেটিংস</button><button class="btn secondary" onclick="backup()">💾 Backup</button><button class="btn secondary" onclick="document.getElementById('restore').click()">♻️ Restore</button></div><input id="restore" type="file" accept=".json" class="hidden" onchange="restore(this.files[0])"><div class="card" style="margin-top:12px"><b>বর্তমান ডেটা</b><p class="muted">${db.customers.length} কাস্টমার · ${db.orders.length} অর্ডার</p></div>`;
+}
+function customerCard(c){let os=db.orders.filter(o=>o.customerId===c.id), due=os.reduce((a,o)=>a+Math.max(0,o.due),0);return `<div class="card"><div class="row"><div><div class="order-title">${esc(c.name)}</div><div class="muted">📞 ${esc(c.phone||'—')}</div></div><b>${money(due)}</b></div><div class="row" style="margin-top:10px"><span class="muted">${os.length}টি অর্ডার</span><button class="btn secondary" onclick="viewCustomer('${c.id}')">প্রোফাইল</button></div></div>`}
+function filterOrders(q){q=q.toLowerCase();document.getElementById('orderList').innerHTML=db.orders.slice().reverse().filter(o=>(o.customerName+' '+o.phone+' '+o.no).toLowerCase().includes(q)).map(orderCard).join('')||'<div class="card muted">মিল পাওয়া যায়নি।</div>'}
+function filterCustomers(q){q=q.toLowerCase();document.getElementById('customerList').innerHTML=db.customers.slice().reverse().filter(c=>(c.name+' '+c.phone).toLowerCase().includes(q)).map(customerCard).join('')||'<div class="card muted">মিল পাওয়া যায়নি।</div>'}
+
+function newCustomer(){modal(`<div class="sheet-head"><h2>নতুন কাস্টমার</h2><button class="x" onclick="closeModal()">×</button></div><label>নাম*<input id="cn"></label><label>মোবাইল<input id="cp" inputmode="tel"></label><label>ঠিকানা<textarea id="ca"></textarea></label><label>নোট<textarea id="cnotes"></textarea></label><button class="btn gold" style="width:100%;margin-top:15px" onclick="saveCustomer()">সেভ করুন</button>`)}
+function saveCustomer(){let c={id:crypto.randomUUID(),name:cn.value.trim(),phone:cp.value.trim(),address:ca.value,notes:cnotes.value};if(!c.name)return alert('নাম দিন');db.customers.push(c);save();closeModal();render('customers')}
+function newOrder(){let opts=db.customers.map(c=>`<option value="${c.id}">${esc(c.name)} — ${esc(c.phone)}</option>`).join('');modal(`<div class="sheet-head"><h2>নতুন অর্ডার</h2><button class="x" onclick="closeModal()">×</button></div><label>কাস্টমার<select id="oc"><option value="">নতুন/নির্বাচন করুন</option>${opts}</select></label><button class="btn secondary" onclick="newCustomer()">+ নতুন কাস্টমার</button><label>কী বানাবে<select id="oi" multiple size="3"><option>Panjabi</option><option>Pajama</option><option>Shirt</option></select></label><label>অর্ডারের তারিখ<input id="od" type="date" value="${today()}"></label><label>ডেলিভারি তারিখ<input id="dd" type="date"></label><label>মোট মূল্য<input id="ot" type="number" inputmode="decimal"></label><label>অগ্রিম<input id="op" type="number" inputmode="decimal"></label><label>স্ট্যাটাস<select id="os"><option>Pending</option><option>Cutting</option><option>Sewing</option><option>Ready</option></select></label><label>পাঞ্জাবী মাপ <small class="muted">(যদি প্রযোজ্য)</small></label><div class="form-grid">${['length','shoulder','chest','waist','hip','sleeve','collar','cuff'].map(x=>`<label>${x}<input id="m_${x}"></label>`).join('')}</div><label>পাজামা মাপ <small class="muted">(যদি প্রযোজ্য)</small></label><div class="form-grid">${['p_length','p_waist','thigh','knee','bottom','belt'].map(x=>`<label>${x.replace('p_','')}<input id="m_${x}"></label>`).join('')}</div><label>ডিজাইন/বিশেষ নির্দেশনা<textarea id="on"></textarea></label><button class="btn gold" style="width:100%;margin-top:15px" onclick="saveOrder()">অর্ডার সেভ করুন</button>`)}
+function saveOrder(){
+ let c=db.customers.find(x=>x.id===oc.value); if(!c){alert('আগে কাস্টমার নির্বাচন করুন।');return}
+ let total=+ot.value||0, paid=+op.value||0;
+ let m={}; document.querySelectorAll('[id^="m_"]').forEach(x=>m[x.id.slice(2)]=x.value);
+ let o={id:crypto.randomUUID(),no:orderNo(),customerId:c.id,customerName:c.name,phone:c.phone,items:[...oi.selectedOptions].map(x=>x.value),orderDate:od.value,deliveryDate:dd.value,total,paid,due:Math.max(0,total-paid),status:os.value,measurement:m,notes:on.value,createdAt:new Date().toISOString()};
+ db.orders.push(o);save();closeModal();render('orders');
+}
+function viewOrder(id){let o=db.orders.find(x=>x.id===id);modal(`<div class="sheet-head"><h2>${esc(o.no)}</h2><button class="x" onclick="closeModal()">×</button></div><div class="card"><b>${esc(o.customerName)}</b><div class="muted">📞 ${esc(o.phone||'—')}</div><p>👔 ${esc(o.items.join(' + '))}</p><p>অর্ডার: ${esc(o.orderDate)}<br>ডেলিভারি: ${esc(o.deliveryDate||'—')}</p><p>মোট: <b>${money(o.total)}</b><br>অগ্রিম: ${money(o.paid)}<br>বাকি: <b>${money(o.due)}</b></p><label>স্ট্যাটাস<select id="vstatus" onchange="updateStatus('${o.id}',this.value)">${['Pending','Cutting','Sewing','Ready','Delivered','Cancelled'].map(s=>`<option ${s===o.status?'selected':''}>${s}</option>`).join('')}</select></label></div><div class="actions" style="margin-top:12px"><button class="btn" onclick="shareOrder('${o.id}')">📤 Invoice/Message</button><button class="btn secondary" onclick="shareMeasurement('${o.id}')">📏 মাপ পাঠান</button></div><div class="section-title"><h2>মাপ</h2></div><div class="preview">${measurementText(o)}</div>`)}
+function updateStatus(id,s){let o=db.orders.find(x=>x.id===id);o.status=s;save();render('orders');closeModal()}
+function measurementText(o){let m=o.measurement||{};return `Panjabi\\nLength: ${m.length||'—'}"\\nShoulder: ${m.shoulder||'—'}"\\nChest: ${m.chest||'—'}"\\nWaist: ${m.waist||'—'}"\\nHip: ${m.hip||'—'}"\\nSleeve: ${m.sleeve||'—'}"\\nCollar: ${m.collar||'—'}"\\nCuff: ${m.cuff||'—'}"\\n\\nPajama\\nLength: ${m.p_length||'—'}"\\nWaist: ${m.p_waist||'—'}"\\nThigh: ${m.thigh||'—'}"\\nKnee: ${m.knee||'—'}"\\nBottom: ${m.bottom||'—'}"\\nBelt: ${m.belt||'—'}"`}
+
+function shareOrder(id){let o=db.orders.find(x=>x.id===id);let text=`আসসালামু আলাইকুম,\\n\\nপ্রিয় ${o.customerName},\\n\\n${db.settings.business}-এ আপনার অর্ডারের তথ্য:\\n🧾 Order: ${o.no}\\n👔 Item: ${o.items.join(' + ')}\\n📅 Order Date: ${o.orderDate}\\n🚚 Delivery: ${o.deliveryDate||'—'}\\n💰 Total: ${money(o.total)}\\n💵 Advance: ${money(o.paid)}\\n💳 Due: ${money(o.due)}\\n\\nধন্যবাদ।\\n${db.settings.business}`;shareText(text)}
+function shareMeasurement(id){let o=db.orders.find(x=>x.id===id);shareText(`📏 ${db.settings.business}\\nCustomer: ${o.customerName}\\nOrder: ${o.no}\\n\\n${measurementText(o)}`)}
+async function shareText(text){if(navigator.share){try{await navigator.share({title:db.settings.business,text})}catch(e){}}else{await navigator.clipboard?.writeText(text);alert('মেসেজ কপি করা হয়েছে। WhatsApp/Messenger-এ Paste করুন।')}}
+function viewCustomer(id){let c=db.customers.find(x=>x.id===id),os=db.orders.filter(o=>o.customerId===id);modal(`<div class="sheet-head"><h2>${esc(c.name)}</h2><button class="x" onclick="closeModal()">×</button></div><div class="card">📞 ${esc(c.phone||'—')}<br>${esc(c.address||'')}<p class="muted">${os.length}টি অর্ডার</p></div><div class="list">${os.map(orderCard).join('')||'<div class="card muted">অর্ডার নেই</div>'}</div>`)}
+function reports(){let sales=db.orders.reduce((a,o)=>a+o.total,0),paid=db.orders.reduce((a,o)=>a+o.paid,0);modal(`<div class="sheet-head"><h2>📊 রিপোর্ট</h2><button class="x" onclick="closeModal()">×</button></div><div class="grid"><div class="card stat"><b>${db.orders.length}</b><span>মোট অর্ডার</span></div><div class="card stat"><b>${money(sales)}</b><span>মোট বিক্রি</span></div><div class="card stat"><b>${money(paid)}</b><span>মোট আদায়</span></div><div class="card stat"><b>${money(sales-paid)}</b><span>মোট বাকি</span></div></div>`)}
+function settings(){modal(`<div class="sheet-head"><h2>⚙️ সেটিংস</h2><button class="x" onclick="closeModal()">×</button></div><label>টেইলার্সের নাম<input id="sb" value="${esc(db.settings.business)}"></label><label>ফোন<input id="sp" value="${esc(db.settings.phone||'')}"></label><button class="btn gold" style="width:100%;margin-top:15px" onclick="db.settings.business=sb.value;db.settings.phone=sp.value;save();document.getElementById('businessName').textContent=db.settings.business;closeModal()">সেভ করুন</button>`)}
+function backup(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(db,null,2)],{type:'application/json'}));a.download='al-barakah-tailors-backup.json';a.click();URL.revokeObjectURL(a.href)}
+function restore(file){if(!file)return;let r=new FileReader();r.onload=()=>{try{db=JSON.parse(r.result);save();render('home');alert('Backup restore হয়েছে।')}catch(e){alert('Backup ফাইলটি সঠিক নয়।')}};r.readAsText(file)}
+document.querySelectorAll('.nav').forEach(b=>b.onclick=()=>render(b.dataset.tab));
+if('serviceWorker' in navigator) navigator.serviceWorker.register('sw.js').catch(()=>{});
+render();
+</script>
+</body>
+</html>
