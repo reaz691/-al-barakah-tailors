@@ -10,116 +10,453 @@
 
 <style>
 :root{
- --bg:#f5f7f6;--card:#fff;--ink:#17302a;--muted:#6b7772;
- --brand:#173b2b;--accent:#c89b3c;--danger:#b42318;--line:#e4e9e6
+ --bg:#f5f7f6;
+ --card:#fff;
+ --ink:#17302a;
+ --muted:#6b7772;
+ --brand:#173b2b;
+ --accent:#c89b3c;
+ --danger:#b42318;
+ --line:#e4e9e6
 }
+
 *{box-sizing:border-box}
+
 body{
- margin:0;font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Bengali",
- "Noto Sans",sans-serif;background:var(--bg);color:var(--ink);
+ margin:0;
+ font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Bengali",
+ "Noto Sans",sans-serif;
+ background:var(--bg);
+ color:var(--ink);
  padding-bottom:82px
 }
+
 header{
- background:linear-gradient(135deg,#173b2b,#245844);color:#fff;
- padding:20px 18px 24px;border-radius:0 0 24px 24px
+ background:linear-gradient(135deg,#173b2b,#245844);
+ color:#fff;
+ padding:20px 18px 24px;
+ border-radius:0 0 24px 24px
 }
-.brand{display:flex;gap:12px;align-items:center}
+
+.brand{
+ display:flex;
+ gap:12px;
+ align-items:center
+}
+
 .logo{
- width:52px;height:52px;border-radius:14px;background:#fff2;
- border:1px solid #ffffff44;display:grid;place-items:center;font-size:24px
+ width:52px;
+ height:52px;
+ border-radius:14px;
+ background:#fff2;
+ border:1px solid #ffffff44;
+ display:grid;
+ place-items:center;
+ font-size:24px
 }
-.brand h1{font-size:19px;margin:0}
-.brand p{margin:3px 0 0;color:#dce9e2;font-size:12px}
 
-main{padding:16px;max-width:760px;margin:auto}
+.brand h1{
+ font-size:19px;
+ margin:0
+}
+
+.brand p{
+ margin:3px 0 0;
+ color:#dce9e2;
+ font-size:12px
+}
+
+main{
+ padding:16px;
+ max-width:760px;
+ margin:auto
+}
+
 .section-title{
- display:flex;justify-content:space-between;align-items:center;margin:20px 0 10px
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin:20px 0 10px
 }
-.section-title h2{font-size:17px;margin:0}
-.muted{color:var(--muted);font-size:13px}
 
-.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.section-title h2{
+ font-size:17px;
+ margin:0
+}
+
+.muted{
+ color:var(--muted);
+ font-size:13px
+}
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px
+}
+
 .card{
- background:var(--card);border:1px solid var(--line);border-radius:16px;
- padding:14px;box-shadow:0 2px 10px #173b2b08
+ background:var(--card);
+ border:1px solid var(--line);
+ border-radius:16px;
+ padding:14px;
+ box-shadow:0 2px 10px #173b2b08
 }
-.stat b{font-size:24px;display:block}
-.stat span{font-size:12px;color:var(--muted)}
 
-.actions{display:grid;grid-template-columns:repeat(2,1fr);gap:10px}
+.stat b{
+ font-size:24px;
+ display:block
+}
+
+.stat span{
+ font-size:12px;
+ color:var(--muted)
+}
+
+.actions{
+ display:grid;
+ grid-template-columns:repeat(2,1fr);
+ gap:10px
+}
+
 .btn{
- border:0;border-radius:14px;padding:13px 12px;font-size:14px;
- font-weight:650;background:var(--brand);color:white
+ border:0;
+ border-radius:14px;
+ padding:13px 12px;
+ font-size:14px;
+ font-weight:650;
+ background:var(--brand);
+ color:white
 }
-.btn.secondary{background:#eaf0ed;color:var(--brand)}
-.btn.gold{background:var(--accent);color:#fff}
-.btn.danger{background:#fff0ee;color:var(--danger)}
 
-.list{display:flex;flex-direction:column;gap:9px}
+.btn.secondary{
+ background:#eaf0ed;
+ color:var(--brand)
+}
+
+.btn.gold{
+ background:var(--accent);
+ color:#fff
+}
+
+.btn.danger{
+ background:#fff0ee;
+ color:var(--danger)
+}
+
+.list{
+ display:flex;
+ flex-direction:column;
+ gap:9px
+}
+
 .row{
- display:flex;justify-content:space-between;gap:12px;align-items:center
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+ align-items:center
 }
-.order-title{font-weight:700}
+
+.order-title{
+ font-weight:700
+}
+
 .badge{
- display:inline-block;padding:4px 8px;border-radius:999px;
- background:#edf5f0;font-size:11px;color:var(--brand)
+ display:inline-block;
+ padding:4px 8px;
+ border-radius:999px;
+ background:#edf5f0;
+ font-size:11px;
+ color:var(--brand)
 }
-.badge.warn{background:#fff4db;color:#8a5b00}
+
+.badge.warn{
+ background:#fff4db;
+ color:#8a5b00
+}
+
+.badge.danger{
+ background:#ffebe9;
+ color:var(--danger)
+}
 
 .bottom{
- position:fixed;bottom:0;left:0;right:0;background:#fff;
- border-top:1px solid var(--line);display:grid;grid-template-columns:repeat(4,1fr);
+ position:fixed;
+ bottom:0;
+ left:0;
+ right:0;
+ background:#fff;
+ border-top:1px solid var(--line);
+ display:grid;
+ grid-template-columns:repeat(4,1fr);
  padding:8px max(8px,env(safe-area-inset-left))
- calc(8px + env(safe-area-inset-bottom));z-index:5
+ calc(8px + env(safe-area-inset-bottom));
+ z-index:5
 }
+
 .nav{
- border:0;background:none;color:#68736f;font-size:11px
+ border:0;
+ background:none;
+ color:#68736f;
+ font-size:11px
 }
-.nav.active{color:var(--brand);font-weight:700}
+
+.nav.active{
+ color:var(--brand);
+ font-weight:700
+}
 
 input,select,textarea{
- width:100%;padding:12px;border:1px solid #d9e1dd;border-radius:12px;
- background:#fff;font:inherit;margin-top:6px
+ width:100%;
+ padding:12px;
+ border:1px solid #d9e1dd;
+ border-radius:12px;
+ background:#fff;
+ font:inherit;
+ margin-top:6px
 }
+
 label{
- font-size:12px;color:#5f6b66;display:block;margin-top:11px
+ font-size:12px;
+ color:#5f6b66;
+ display:block;
+ margin-top:11px
 }
+
 .form-grid{
- display:grid;grid-template-columns:1fr 1fr;gap:8px
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px
 }
 
 .modal{
- position:fixed;inset:0;background:#0007;display:none;
- align-items:flex-end;z-index:10
+ position:fixed;
+ inset:0;
+ background:#0007;
+ display:none;
+ align-items:flex-end;
+ z-index:10
 }
-.modal.show{display:flex}
+
+.modal.show{
+ display:flex
+}
+
 .sheet{
- background:var(--bg);width:100%;max-height:92vh;overflow:auto;
- border-radius:24px 24px 0 0;padding:18px
+ background:var(--bg);
+ width:100%;
+ max-height:92vh;
+ overflow:auto;
+ border-radius:24px 24px 0 0;
+ padding:18px
 }
+
 .sheet-head{
- display:flex;justify-content:space-between;align-items:center
+ display:flex;
+ justify-content:space-between;
+ align-items:center
 }
+
 .x{
- border:0;background:#e8eeeb;border-radius:50%;width:36px;
- height:36px;font-size:20px
+ border:0;
+ background:#e8eeeb;
+ border-radius:50%;
+ width:36px;
+ height:36px;
+ font-size:20px
 }
+
 .preview{
- background:#fff;border-radius:16px;padding:16px;
- white-space:pre-wrap;border:1px solid var(--line)
+ background:#fff;
+ border-radius:16px;
+ padding:16px;
+ white-space:pre-wrap;
+ border:1px solid var(--line)
 }
-.hidden{display:none!important}
-.search{margin:8px 0 12px}
+
+.hidden{
+ display:none!important
+}
+
+.search{
+ margin:8px 0 12px
+}
+
 .measure-title{
- font-weight:700;margin-top:16px;margin-bottom:5px
+ font-weight:700;
+ margin-top:16px;
+ margin-bottom:5px
 }
-.hint{font-size:11px;color:var(--muted);margin-top:4px}
+
+.hint{
+ font-size:11px;
+ color:var(--muted);
+ margin-top:4px
+}
+
+/* INVOICE PREVIEW */
+
+.invoice{
+ background:#fff;
+ color:#17231f;
+ border-radius:16px;
+ padding:20px;
+ border:1px solid #e2e7e4
+}
+
+.invoice-head{
+ text-align:center;
+ border-bottom:2px solid #173b2b;
+ padding-bottom:14px;
+ margin-bottom:14px
+}
+
+.invoice-brand{
+ font-size:22px;
+ font-weight:800;
+ color:#173b2b
+}
+
+.invoice-sub{
+ font-size:12px;
+ color:#6b7772;
+ margin-top:3px
+}
+
+.invoice-title{
+ text-align:center;
+ font-size:18px;
+ font-weight:800;
+ margin:10px 0 15px
+}
+
+.invoice-info{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:8px;
+ margin-bottom:15px
+}
+
+.invoice-info-box{
+ background:#f6f8f7;
+ border-radius:10px;
+ padding:9px
+}
+
+.invoice-info-box small{
+ display:block;
+ color:#6b7772;
+ font-size:10px
+}
+
+.invoice-info-box b{
+ font-size:13px
+}
+
+.invoice-table{
+ width:100%;
+ border-collapse:collapse;
+ margin-top:10px
+}
+
+.invoice-table th,
+.invoice-table td{
+ border:1px solid #dfe5e2;
+ padding:8px;
+ font-size:12px;
+ text-align:left
+}
+
+.invoice-table th{
+ background:#f0f4f2
+}
+
+.invoice-total{
+ margin-top:12px;
+ margin-left:auto;
+ width:230px;
+ max-width:100%
+}
+
+.invoice-total div{
+ display:flex;
+ justify-content:space-between;
+ padding:5px 0;
+ font-size:13px
+}
+
+.invoice-total .due{
+ border-top:2px solid #173b2b;
+ margin-top:4px;
+ padding-top:8px;
+ font-size:15px;
+ font-weight:800
+}
+
+.invoice-note{
+ margin-top:15px;
+ background:#fafbf9;
+ border-left:3px solid #c89b3c;
+ padding:10px;
+ font-size:12px
+}
+
+.invoice-footer{
+ margin-top:22px;
+ padding-top:12px;
+ border-top:1px solid #e1e6e3;
+ text-align:center;
+ font-size:11px;
+ color:#6b7772
+}
 
 @media(min-width:600px){
- .grid{grid-template-columns:repeat(4,1fr)}
- .actions{grid-template-columns:repeat(4,1fr)}
- .modal{align-items:center}
- .sheet{max-width:680px;border-radius:24px}
+
+ .grid{
+  grid-template-columns:repeat(4,1fr)
+ }
+
+ .actions{
+  grid-template-columns:repeat(4,1fr)
+ }
+
+ .modal{
+  align-items:center
+ }
+
+ .sheet{
+  max-width:680px;
+  border-radius:24px
+ }
+}
+
+/* PRINT */
+
+@media print{
+
+ body{
+  background:#fff;
+  padding:0
+ }
+
+ body>*{
+  display:none!important
+ }
+
+ #printArea{
+  display:block!important
+ }
+
+ .invoice{
+  border:0;
+  border-radius:0;
+  padding:10px
+ }
+
+ @page{
+  size:A4;
+  margin:12mm
+ }
 }
 </style>
 </head>
@@ -139,15 +476,30 @@ label{
 <main id="app"></main>
 
 <nav class="bottom">
- <button class="nav active" data-tab="home">⌂<br>হোম</button>
- <button class="nav" data-tab="orders">🧾<br>অর্ডার</button>
- <button class="nav" data-tab="customers">👤<br>কাস্টমার</button>
- <button class="nav" data-tab="more">☰<br>আরও</button>
+
+ <button class="nav active" data-tab="home">
+  ⌂<br>হোম
+ </button>
+
+ <button class="nav" data-tab="orders">
+  🧾<br>অর্ডার
+ </button>
+
+ <button class="nav" data-tab="customers">
+  👤<br>কাস্টমার
+ </button>
+
+ <button class="nav" data-tab="more">
+  ☰<br>আরও
+ </button>
+
 </nav>
 
 <div class="modal" id="modal">
  <div class="sheet" id="sheet"></div>
 </div>
+
+<div id="printArea" class="hidden"></div>
 
 <script>
 
@@ -183,17 +535,28 @@ const esc=s=>String(s??'').replace(
 const today=()=>new Date().toISOString().slice(0,10);
 
 function orderNo(){
- return 'ABT-'+new Date().getFullYear()+'-'+
+
+ return 'ABT-'+
+ new Date().getFullYear()+
+ '-'+
  String(db.orders.length+1).padStart(6,'0');
+
 }
 
 function modal(html){
+
  document.getElementById('sheet').innerHTML=html;
- document.getElementById('modal').classList.add('show');
+
+ document.getElementById('modal')
+ .classList.add('show');
+
 }
 
 function closeModal(){
- document.getElementById('modal').classList.remove('show');
+
+ document.getElementById('modal')
+ .classList.remove('show');
+
 }
 
 document.getElementById('modal').addEventListener(
@@ -203,8 +566,9 @@ document.getElementById('modal').addEventListener(
  }
 );
 
+
 /* =========================
-   MEASUREMENT SYSTEM
+   MEASUREMENTS
 ========================= */
 
 const panjabiFields=[
@@ -228,22 +592,33 @@ const pajamaFields=[
 ];
 
 function measureInputs(fields,m={}){
+
  return `
  <div class="form-grid">
+
  ${fields.map(([key,label])=>`
+
   <label>
+
    ${label}
+
    <input
     id="m_${key}"
     value="${esc(m[key]||'')}"
     placeholder="ইঞ্চি"
    >
+
   </label>
+
  `).join('')}
- </div>`;
+
+ </div>
+ `;
+
 }
 
 function readMeasurements(){
+
  let m={};
 
  document.querySelectorAll('[id^="m_"]').forEach(x=>{
@@ -254,6 +629,7 @@ function readMeasurements(){
 }
 
 function measurementText(m={}){
+
  return `
 পাঞ্জাবি
 লম্বা: ${m.length||'—'}"
@@ -273,15 +649,21 @@ function measurementText(m={}){
 নিচ: ${m.bottom||'—'}"
 বেল্ট: ${m.belt||'—'}"
 `;
+
 }
 
 function hasPanjabi(items){
+
  return items.includes('Panjabi');
+
 }
 
 function hasPajama(items){
+
  return items.includes('Pajama');
+
 }
+
 
 /* =========================
    DASHBOARD
@@ -303,9 +685,15 @@ function dashboard(){
  );
 
  return `
+
  <div class="section-title">
+
   <h2>আজকের সারাংশ</h2>
-  <span class="muted">${today()}</span>
+
+  <span class="muted">
+   ${today()}
+  </span>
+
  </div>
 
  <div class="grid">
@@ -316,7 +704,9 @@ function dashboard(){
   </div>
 
   <div class="card stat">
-   <b>${db.orders.filter(o=>o.status==='Sewing').length}</b>
+   <b>
+    ${db.orders.filter(o=>o.status==='Sewing').length}
+   </b>
    <span>সেলাই চলছে</span>
   </div>
 
@@ -363,14 +753,17 @@ function dashboard(){
  <div class="list">
 
  ${
- deliveries.length
- ? deliveries.map(orderCard).join('')
- : '<div class="card muted">আজ কোনো ডেলিভারি নেই।</div>'
+  deliveries.length
+  ? deliveries.map(orderCard).join('')
+  : '<div class="card muted">আজ কোনো ডেলিভারি নেই।</div>'
  }
 
  </div>
+
  `;
+
 }
+
 
 /* =========================
    ORDER CARD
@@ -379,22 +772,30 @@ function dashboard(){
 function orderCard(o){
 
  return `
+
  <div class="card">
 
   <div class="row">
 
    <div>
+
     <div class="order-title">
      ${esc(o.customerName)}
     </div>
 
     <div class="muted">
-     ${esc(o.no)} · ${esc((o.items||[]).join(' + '))}
+     ${esc(o.no)} ·
+     ${esc((o.items||[]).join(' + '))}
     </div>
+
    </div>
 
-   <span class="badge ${o.status==='Ready'?'warn':''}">
+   <span class="badge
+    ${o.status==='Ready'?'warn':''}
+    ${o.status==='Cancelled'?'danger':''}">
+
     ${esc(o.status)}
+
    </span>
 
   </div>
@@ -405,7 +806,9 @@ function orderCard(o){
     ডেলিভারি: ${esc(o.deliveryDate||'—')}
    </span>
 
-   <b>${money(o.due)} বাকি</b>
+   <b>
+    ${money(o.due)} বাকি
+   </b>
 
   </div>
 
@@ -414,23 +817,30 @@ function orderCard(o){
    <button
     class="btn secondary"
     onclick="viewOrder('${o.id}')">
+
     দেখুন
+
    </button>
 
    <button
     class="btn"
-    onclick="shareOrder('${o.id}')">
-    📤 পাঠান
+    onclick="showInvoice('${o.id}')">
+
+    🧾 Invoice
+
    </button>
 
   </div>
 
  </div>
+
  `;
+
 }
 
+
 /* =========================
-   MAIN NAVIGATION
+   NAVIGATION
 ========================= */
 
 function render(tab='home'){
@@ -445,15 +855,25 @@ function render(tab='home'){
  const app=document.getElementById('app');
 
  if(tab==='home'){
+
   app.innerHTML=dashboard();
+
  }
 
  if(tab==='orders'){
 
   app.innerHTML=`
+
   <div class="section-title">
+
    <h2>অর্ডার</h2>
-   <button class="btn" onclick="newOrder()">+ নতুন</button>
+
+   <button
+    class="btn"
+    onclick="newOrder()">
+    + নতুন
+   </button>
+
   </div>
 
   <input
@@ -463,21 +883,35 @@ function render(tab='home'){
   >
 
   <div id="orderList" class="list">
+
    ${
-    db.orders.slice().reverse().map(orderCard).join('')
+    db.orders.slice().reverse()
+    .map(orderCard)
+    .join('')
     ||
     '<div class="card muted">কোনো অর্ডার নেই।</div>'
    }
+
   </div>
+
   `;
+
  }
 
  if(tab==='customers'){
 
   app.innerHTML=`
+
   <div class="section-title">
+
    <h2>কাস্টমার</h2>
-   <button class="btn" onclick="newCustomer()">+ নতুন</button>
+
+   <button
+    class="btn"
+    onclick="newCustomer()">
+    + নতুন
+   </button>
+
   </div>
 
   <input
@@ -487,33 +921,46 @@ function render(tab='home'){
   >
 
   <div id="customerList" class="list">
+
    ${
-    db.customers.slice().reverse().map(customerCard).join('')
+    db.customers.slice().reverse()
+    .map(customerCard)
+    .join('')
     ||
     '<div class="card muted">কোনো কাস্টমার নেই।</div>'
    }
+
   </div>
+
   `;
+
  }
 
  if(tab==='more'){
 
   app.innerHTML=`
+
   <div class="section-title">
    <h2>আরও</h2>
   </div>
 
   <div class="actions">
 
-   <button class="btn secondary" onclick="reports()">
+   <button
+    class="btn secondary"
+    onclick="reports()">
     📊 রিপোর্ট
    </button>
 
-   <button class="btn secondary" onclick="settings()">
+   <button
+    class="btn secondary"
+    onclick="settings()">
     ⚙️ সেটিংস
    </button>
 
-   <button class="btn secondary" onclick="backup()">
+   <button
+    class="btn secondary"
+    onclick="backup()">
     💾 Backup
    </button>
 
@@ -534,15 +981,22 @@ function render(tab='home'){
   >
 
   <div class="card" style="margin-top:12px">
+
    <b>বর্তমান ডেটা</b>
+
    <p class="muted">
     ${db.customers.length} কাস্টমার ·
     ${db.orders.length} অর্ডার
    </p>
+
   </div>
+
   `;
+
  }
+
 }
+
 
 /* =========================
    CUSTOMER
@@ -562,6 +1016,7 @@ function customerCard(c){
  Object.values(c.measurement).some(Boolean);
 
  return `
+
  <div class="card">
 
   <div class="row">
@@ -598,7 +1053,9 @@ function customerCard(c){
   </div>
 
  </div>
+
  `;
+
 }
 
 function filterOrders(q){
@@ -606,16 +1063,23 @@ function filterOrders(q){
  q=q.toLowerCase();
 
  document.getElementById('orderList').innerHTML=
+
  db.orders.slice().reverse()
+
  .filter(
-  o=>(o.customerName+' '+o.phone+' '+o.no)
+  o=>
+  (o.customerName+' '+o.phone+' '+o.no)
   .toLowerCase()
   .includes(q)
  )
+
  .map(orderCard)
  .join('')
+
  ||
+
  '<div class="card muted">মিল পাওয়া যায়নি।</div>';
+
 }
 
 function filterCustomers(q){
@@ -623,17 +1087,25 @@ function filterCustomers(q){
  q=q.toLowerCase();
 
  document.getElementById('customerList').innerHTML=
+
  db.customers.slice().reverse()
+
  .filter(
-  c=>(c.name+' '+c.phone)
+  c=>
+  (c.name+' '+c.phone)
   .toLowerCase()
   .includes(q)
  )
+
  .map(customerCard)
  .join('')
+
  ||
+
  '<div class="card muted">মিল পাওয়া যায়নি।</div>';
+
 }
+
 
 /* =========================
    NEW CUSTOMER
@@ -642,9 +1114,17 @@ function filterCustomers(q){
 function newCustomer(){
 
  modal(`
+
  <div class="sheet-head">
+
   <h2>নতুন কাস্টমার</h2>
-  <button class="x" onclick="closeModal()">×</button>
+
+  <button
+   class="x"
+   onclick="closeModal()">
+   ×
+  </button>
+
  </div>
 
  <label>
@@ -673,7 +1153,6 @@ function newCustomer(){
 
  <div class="hint">
   একবার মাপ দিলে কাস্টমারের প্রোফাইলে সংরক্ষণ হবে।
-  পরের অর্ডারে কাস্টমার নির্বাচন করলেই মাপ অটো আসবে।
  </div>
 
  <div class="measure-title">
@@ -692,33 +1171,54 @@ function newCustomer(){
   class="btn gold"
   style="width:100%;margin-top:15px"
   onclick="saveCustomer()">
+
   সেভ করুন
+
  </button>
+
  `);
+
 }
 
 function saveCustomer(){
 
  let c={
+
   id:crypto.randomUUID(),
-  name:document.getElementById('cn').value.trim(),
-  phone:document.getElementById('cp').value.trim(),
-  address:document.getElementById('ca').value,
-  notes:document.getElementById('cnotes').value,
+
+  name:document.getElementById('cn')
+  .value.trim(),
+
+  phone:document.getElementById('cp')
+  .value.trim(),
+
+  address:document.getElementById('ca')
+  .value,
+
+  notes:document.getElementById('cnotes')
+  .value,
+
   measurement:readMeasurements()
+
  };
 
  if(!c.name){
+
   alert('নাম দিন');
   return;
+
  }
 
  db.customers.push(c);
 
  save();
+
  closeModal();
+
  render('customers');
+
 }
+
 
 /* =========================
    NEW ORDER
@@ -728,13 +1228,19 @@ function customerOptions(selected=''){
 
  return db.customers.map(
   c=>`
+
   <option
    value="${c.id}"
    ${c.id===selected?'selected':''}>
-   ${esc(c.name)} — ${esc(c.phone||'')}
+
+   ${esc(c.name)}
+   — ${esc(c.phone||'')}
+
   </option>
+
   `
  ).join('');
+
 }
 
 function newOrder(selectedCustomer=''){
@@ -746,12 +1252,21 @@ function newOrder(selectedCustomer=''){
  let saved=c?.measurement||{};
 
  modal(`
+
  <div class="sheet-head">
+
   <h2>নতুন অর্ডার</h2>
-  <button class="x" onclick="closeModal()">×</button>
+
+  <button
+   class="x"
+   onclick="closeModal()">
+   ×
+  </button>
+
  </div>
 
  <label>
+
   কাস্টমার
 
   <select
@@ -765,15 +1280,19 @@ function newOrder(selectedCustomer=''){
    ${customerOptions(selectedCustomer)}
 
   </select>
+
  </label>
 
  <button
   class="btn secondary"
   onclick="closeModal();newCustomer()">
+
   + নতুন কাস্টমার
+
  </button>
 
  <label>
+
   কী বানাবে
 
   <select
@@ -787,41 +1306,57 @@ function newOrder(selectedCustomer=''){
    <option>Shirt</option>
 
   </select>
+
  </label>
 
  <div class="hint">
-  একাধিক পোশাক নির্বাচন করতে চাইলে একাধিক অপশন সিলেক্ট করুন।
+  একাধিক পোশাক নির্বাচন করা যাবে।
  </div>
 
  <label>
   অর্ডারের তারিখ
-  <input id="od" type="date" value="${today()}">
+  <input
+   id="od"
+   type="date"
+   value="${today()}">
  </label>
 
  <label>
   ডেলিভারি তারিখ
-  <input id="dd" type="date">
+  <input
+   id="dd"
+   type="date">
  </label>
 
  <label>
   মোট মূল্য
-  <input id="ot" type="number" inputmode="decimal">
+  <input
+   id="ot"
+   type="number"
+   inputmode="decimal">
  </label>
 
  <label>
   অগ্রিম
-  <input id="op" type="number" inputmode="decimal">
+  <input
+   id="op"
+   type="number"
+   inputmode="decimal">
  </label>
 
  <label>
+
   স্ট্যাটাস
 
   <select id="os">
+
    <option>Pending</option>
    <option>Cutting</option>
    <option>Sewing</option>
    <option>Ready</option>
+
   </select>
+
  </label>
 
  <div id="panjabiBox">
@@ -853,11 +1388,15 @@ function newOrder(selectedCustomer=''){
   class="btn gold"
   style="width:100%;margin-top:15px"
   onclick="saveOrder()">
+
   অর্ডার সেভ করুন
+
  </button>
+
  `);
 
  toggleMeasureSections();
+
 }
 
 function loadCustomerMeasurement(id){
@@ -873,15 +1412,18 @@ function loadCustomerMeasurement(id){
   ...pajamaFields
  ].forEach(
   ([key])=>{
+
    let el=document.getElementById('m_'+key);
 
    if(el){
     el.value=m[key]||'';
    }
+
   }
  );
 
  toggleMeasureSections();
+
 }
 
 function toggleMeasureSections(){
@@ -901,7 +1443,9 @@ function toggleMeasureSections(){
   'hidden',
   !hasPajama(items)
  );
+
 }
+
 
 /* =========================
    SAVE ORDER
@@ -914,8 +1458,10 @@ function saveOrder(){
  );
 
  if(!c){
+
   alert('আগে কাস্টমার নির্বাচন করুন।');
   return;
+
  }
 
  let items=[
@@ -923,8 +1469,10 @@ function saveOrder(){
  ].map(x=>x.value);
 
  if(!items.length){
+
   alert('কমপক্ষে একটি পোশাক নির্বাচন করুন।');
   return;
+
  }
 
  let total=
@@ -936,37 +1484,58 @@ function saveOrder(){
  let m=readMeasurements();
 
  let o={
+
   id:crypto.randomUUID(),
+
   no:orderNo(),
+
   customerId:c.id,
+
   customerName:c.name,
+
   phone:c.phone,
+
   items:items,
+
   orderDate:document.getElementById('od').value,
+
   deliveryDate:document.getElementById('dd').value,
+
   total:total,
+
   paid:paid,
+
   due:Math.max(0,total-paid),
+
   status:document.getElementById('os').value,
+
   measurement:m,
+
   notes:document.getElementById('on').value,
+
   createdAt:new Date().toISOString()
+
  };
 
  db.orders.push(o);
 
- /* নতুন মাপ থাকলে কাস্টমারের স্থায়ী মাপও আপডেট */
  if(Object.values(m).some(Boolean)){
+
   c.measurement={
    ...(c.measurement||{}),
    ...m
   };
+
  }
 
  save();
+
  closeModal();
+
  render('orders');
+
 }
+
 
 /* =========================
    VIEW ORDER
@@ -979,6 +1548,7 @@ function viewOrder(id){
  );
 
  modal(`
+
  <div class="sheet-head">
 
   <h2>${esc(o.no)}</h2>
@@ -1000,7 +1570,7 @@ function viewOrder(id){
   </div>
 
   <p>
-   👔 ${esc((o.items||[]).join(' + '))}
+   👔 ${(o.items||[]).map(esc).join(' + ')}
   </p>
 
   <p>
@@ -1018,6 +1588,7 @@ function viewOrder(id){
   </p>
 
   <label>
+
    স্ট্যাটাস
 
    <select
@@ -1046,15 +1617,19 @@ function viewOrder(id){
   style="margin-top:12px">
 
   <button
-   class="btn"
-   onclick="shareOrder('${o.id}')">
-   📤 Invoice/Message
+   class="btn gold"
+   onclick="showInvoice('${o.id}')">
+
+   🧾 Invoice
+
   </button>
 
   <button
    class="btn secondary"
    onclick="shareMeasurement('${o.id}')">
+
    📏 মাপ পাঠান
+
   </button>
 
  </div>
@@ -1084,6 +1659,7 @@ function viewOrder(id){
  }
 
  `);
+
 }
 
 function updateStatus(id,s){
@@ -1099,38 +1675,325 @@ function updateStatus(id,s){
  closeModal();
 
  render('orders');
+
 }
 
+
 /* =========================
-   SHARE
+   INVOICE
 ========================= */
 
-function shareOrder(id){
+function invoiceHTML(o){
+
+ let business=db.settings.business ||
+ 'আল-বারাকাহ টেইলার্স';
+
+ let phone=db.settings.phone||'';
+
+ let items=(o.items||[]);
+
+ let itemRows=items.map(
+  (item,index)=>`
+
+  <tr>
+
+   <td>${index+1}</td>
+
+   <td>${esc(item)}</td>
+
+   <td>${item==='Panjabi'?'পাঞ্জাবি':''}
+       ${item==='Pajama'?'পায়জামা':''}
+       ${item==='Shirt'?'শার্ট':''}
+   </td>
+
+  </tr>
+
+ `
+ ).join('');
+
+ return `
+
+ <div class="invoice">
+
+  <div class="invoice-head">
+
+   <div class="invoice-brand">
+    ${esc(business)}
+   </div>
+
+   <div class="invoice-sub">
+    Tailoring Management
+   </div>
+
+   ${
+    phone
+    ?
+    `<div class="invoice-sub">📞 ${esc(phone)}</div>`
+    :
+    ''
+   }
+
+  </div>
+
+  <div class="invoice-title">
+   INVOICE
+  </div>
+
+  <div class="invoice-info">
+
+   <div class="invoice-info-box">
+
+    <small>Invoice No.</small>
+
+    <b>${esc(o.no)}</b>
+
+   </div>
+
+   <div class="invoice-info-box">
+
+    <small>Status</small>
+
+    <b>${esc(o.status)}</b>
+
+   </div>
+
+   <div class="invoice-info-box">
+
+    <small>Customer</small>
+
+    <b>${esc(o.customerName)}</b>
+
+   </div>
+
+   <div class="invoice-info-box">
+
+    <small>Mobile</small>
+
+    <b>${esc(o.phone||'—')}</b>
+
+   </div>
+
+   <div class="invoice-info-box">
+
+    <small>Order Date</small>
+
+    <b>${esc(o.orderDate||'—')}</b>
+
+   </div>
+
+   <div class="invoice-info-box">
+
+    <small>Delivery Date</small>
+
+    <b>${esc(o.deliveryDate||'—')}</b>
+
+   </div>
+
+  </div>
+
+  <table class="invoice-table">
+
+   <thead>
+
+    <tr>
+     <th>#</th>
+     <th>Item</th>
+     <th>Type</th>
+    </tr>
+
+   </thead>
+
+   <tbody>
+
+    ${itemRows}
+
+   </tbody>
+
+  </table>
+
+  <div class="invoice-total">
+
+   <div>
+    <span>মোট মূল্য</span>
+    <b>${money(o.total)}</b>
+   </div>
+
+   <div>
+    <span>অগ্রিম</span>
+    <b>${money(o.paid)}</b>
+   </div>
+
+   <div class="due">
+    <span>বাকি</span>
+    <b>${money(o.due)}</b>
+   </div>
+
+  </div>
+
+  ${
+   o.notes
+   ?
+   `
+   <div class="invoice-note">
+
+    <b>বিশেষ নির্দেশনা</b>
+
+    <br>
+
+    ${esc(o.notes)}
+
+   </div>
+   `
+   :
+   ''
+  }
+
+  <div class="invoice-footer">
+
+   ধন্যবাদ।
+   আপনার আস্থা ও সহযোগিতার জন্য কৃতজ্ঞ।
+
+   <br><br>
+
+   ${esc(business)}
+
+  </div>
+
+ </div>
+
+ `;
+
+}
+
+function showInvoice(id){
 
  let o=db.orders.find(
   x=>x.id===id
  );
 
+ if(!o)return;
+
+ modal(`
+
+ <div class="sheet-head">
+
+  <h2>🧾 Invoice</h2>
+
+  <button
+   class="x"
+   onclick="closeModal()">
+   ×
+  </button>
+
+ </div>
+
+ <div id="invoicePreview">
+
+  ${invoiceHTML(o)}
+
+ </div>
+
+ <div
+  class="actions"
+  style="margin-top:12px">
+
+  <button
+   class="btn gold"
+   onclick="printInvoice('${o.id}')">
+
+   🖨️ Print / PDF
+
+  </button>
+
+  <button
+   class="btn"
+   onclick="shareInvoice('${o.id}')">
+
+   📤 Share
+
+  </button>
+
+ </div>
+
+ `);
+
+}
+
+
+/* =========================
+   PRINT INVOICE
+========================= */
+
+function printInvoice(id){
+
+ let o=db.orders.find(
+  x=>x.id===id
+ );
+
+ if(!o)return;
+
+ let printArea=document.getElementById('printArea');
+
+ printArea.innerHTML=invoiceHTML(o);
+
+ printArea.classList.remove('hidden');
+
+ window.print();
+
+ setTimeout(
+  ()=>{
+   printArea.classList.add('hidden');
+   printArea.innerHTML='';
+  },
+  1000
+ );
+
+}
+
+
+/* =========================
+   SHARE INVOICE
+========================= */
+
+function shareInvoice(id){
+
+ let o=db.orders.find(
+  x=>x.id===id
+ );
+
+ if(!o)return;
+
  let text=
- `আসসালামু আলাইকুম,
+ `🧾 ${db.settings.business}
 
-প্রিয় ${o.customerName},
+INVOICE
+Invoice No: ${o.no}
 
-${db.settings.business}-এ আপনার অর্ডারের তথ্য:
+Customer: ${o.customerName}
+Mobile: ${o.phone||'—'}
 
-🧾 Order: ${o.no}
-👔 Item: ${(o.items||[]).join(' + ')}
-📅 Order Date: ${o.orderDate}
-🚚 Delivery: ${o.deliveryDate||'—'}
-💰 Total: ${money(o.total)}
-💵 Advance: ${money(o.paid)}
-💳 Due: ${money(o.due)}
+Item: ${(o.items||[]).join(' + ')}
+
+Order Date: ${o.orderDate||'—'}
+Delivery Date: ${o.deliveryDate||'—'}
+
+Total: ${money(o.total)}
+Advance: ${money(o.paid)}
+Due: ${money(o.due)}
+
+Status: ${o.status}
 
 ধন্যবাদ।
 ${db.settings.business}`;
 
  shareText(text);
+
 }
+
+
+/* =========================
+   SHARE MEASUREMENT
+========================= */
 
 function shareMeasurement(id){
 
@@ -1139,13 +2002,16 @@ function shareMeasurement(id){
  );
 
  shareText(
+
  `📏 ${db.settings.business}
 
 Customer: ${o.customerName}
 Order: ${o.no}
 
 ${measurementText(o.measurement||{})}`
+
  );
+
 }
 
 async function shareText(text){
@@ -1153,10 +2019,12 @@ async function shareText(text){
  if(navigator.share){
 
   try{
+
    await navigator.share({
     title:db.settings.business,
     text:text
    });
+
   }catch(e){}
 
  }else{
@@ -1168,7 +2036,9 @@ async function shareText(text){
   );
 
  }
+
 }
+
 
 /* =========================
    CUSTOMER PROFILE
@@ -1185,6 +2055,7 @@ function viewCustomer(id){
  );
 
  modal(`
+
  <div class="sheet-head">
 
   <h2>${esc(c.name)}</h2>
@@ -1200,6 +2071,7 @@ function viewCustomer(id){
  <div class="card">
 
   📞 ${esc(c.phone||'—')}
+
   <br>
 
   ${esc(c.address||'')}
@@ -1217,13 +2089,17 @@ function viewCustomer(id){
   <button
    class="btn secondary"
    onclick="editCustomer('${c.id}')">
+
    ✏️ মাপ এডিট
+
   </button>
 
  </div>
 
  <div class="preview">
+
   ${esc(measurementText(c.measurement||{}))}
+
  </div>
 
  <div class="section-title">
@@ -1233,7 +2109,9 @@ function viewCustomer(id){
   <button
    class="btn"
    onclick="closeModal();newOrder('${c.id}')">
+
    + নতুন অর্ডার
+
   </button>
 
  </div>
@@ -1247,11 +2125,14 @@ function viewCustomer(id){
  }
 
  </div>
+
  `);
+
 }
 
+
 /* =========================
-   EDIT CUSTOMER MEASUREMENT
+   EDIT CUSTOMER
 ========================= */
 
 function editCustomer(id){
@@ -1261,6 +2142,7 @@ function editCustomer(id){
  );
 
  modal(`
+
  <div class="sheet-head">
 
   <h2>কাস্টমার মাপ</h2>
@@ -1274,22 +2156,31 @@ function editCustomer(id){
  </div>
 
  <label>
+
   নাম*
+
   <input
    id="en"
    value="${esc(c.name)}">
+
  </label>
 
  <label>
+
   মোবাইল
+
   <input
    id="ep"
    value="${esc(c.phone||'')}">
+
  </label>
 
  <label>
+
   ঠিকানা
+
   <textarea id="ea">${esc(c.address||'')}</textarea>
+
  </label>
 
  <div class="measure-title">
@@ -1308,9 +2199,13 @@ function editCustomer(id){
   class="btn gold"
   style="width:100%;margin-top:15px"
   onclick="updateCustomer('${c.id}')">
+
   সেভ করুন
+
  </button>
+
  `);
+
 }
 
 function updateCustomer(id){
@@ -1319,20 +2214,31 @@ function updateCustomer(id){
   x=>x.id===id
  );
 
- c.name=document.getElementById('en').value.trim();
- c.phone=document.getElementById('ep').value.trim();
- c.address=document.getElementById('ea').value;
- c.measurement=readMeasurements();
+ c.name=
+  document.getElementById('en')
+  .value.trim();
+
+ c.phone=
+  document.getElementById('ep')
+  .value.trim();
+
+ c.address=
+  document.getElementById('ea').value;
+
+ c.measurement=
+  readMeasurements();
 
  save();
 
  closeModal();
 
  render('customers');
+
 }
 
+
 /* =========================
-   REPORT
+   REPORTS
 ========================= */
 
 function reports(){
@@ -1346,6 +2252,7 @@ function reports(){
  );
 
  modal(`
+
  <div class="sheet-head">
 
   <h2>📊 রিপোর্ট</h2>
@@ -1381,8 +2288,11 @@ function reports(){
   </div>
 
  </div>
+
  `);
+
 }
+
 
 /* =========================
    SETTINGS
@@ -1391,6 +2301,7 @@ function reports(){
 function settings(){
 
  modal(`
+
  <div class="sheet-head">
 
   <h2>⚙️ সেটিংস</h2>
@@ -1404,19 +2315,23 @@ function settings(){
  </div>
 
  <label>
+
   টেইলার্সের নাম
 
   <input
    id="sb"
    value="${esc(db.settings.business)}">
+
  </label>
 
  <label>
+
   ফোন
 
   <input
    id="sp"
    value="${esc(db.settings.phone||'')}">
+
  </label>
 
  <button
@@ -1429,13 +2344,18 @@ function settings(){
    document.getElementById('businessName').textContent=db.settings.business;
    closeModal();
   ">
+
   সেভ করুন
+
  </button>
+
  `);
+
 }
 
+
 /* =========================
-   BACKUP / RESTORE
+   BACKUP
 ========================= */
 
 function backup(){
@@ -1443,10 +2363,12 @@ function backup(){
  let a=document.createElement('a');
 
  a.href=URL.createObjectURL(
+
   new Blob(
    [JSON.stringify(db,null,2)],
    {type:'application/json'}
   )
+
  );
 
  a.download='al-barakah-tailors-backup.json';
@@ -1454,7 +2376,13 @@ function backup(){
  a.click();
 
  URL.revokeObjectURL(a.href);
+
 }
+
+
+/* =========================
+   RESTORE
+========================= */
 
 function restore(file){
 
@@ -1483,7 +2411,9 @@ function restore(file){
  };
 
  r.readAsText(file);
+
 }
+
 
 /* =========================
    START
