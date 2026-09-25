@@ -44,14 +44,22 @@ header{
 }
 
 .logo{
- width:52px;
- height:52px;
+ width:58px;
+ height:58px;
  border-radius:14px;
- background:#fff2;
- border:1px solid #ffffff44;
+ background:#fff;
+ border:1px solid #ffffff55;
  display:grid;
  place-items:center;
- font-size:24px
+ overflow:hidden;
+ flex:none
+}
+
+.logo img{
+ width:100%;
+ height:100%;
+ object-fit:contain;
+ display:block
 }
 
 .brand h1{
@@ -75,6 +83,7 @@ main{
  display:flex;
  justify-content:space-between;
  align-items:center;
+ gap:10px;
  margin:20px 0 10px
 }
 
@@ -125,7 +134,8 @@ main{
  font-size:14px;
  font-weight:650;
  background:var(--brand);
- color:white
+ color:white;
+ cursor:pointer
 }
 
 .btn.secondary{
@@ -141,6 +151,10 @@ main{
 .btn.danger{
  background:#fff0ee;
  color:var(--danger)
+}
+
+.btn:active{
+ transform:scale(.98)
 }
 
 .list{
@@ -196,7 +210,8 @@ main{
  border:0;
  background:none;
  color:#68736f;
- font-size:11px
+ font-size:11px;
+ cursor:pointer
 }
 
 .nav.active{
@@ -212,6 +227,11 @@ input,select,textarea{
  background:#fff;
  font:inherit;
  margin-top:6px
+}
+
+textarea{
+ min-height:80px;
+ resize:vertical
 }
 
 label{
@@ -252,7 +272,8 @@ label{
 .sheet-head{
  display:flex;
  justify-content:space-between;
- align-items:center
+ align-items:center;
+ gap:10px
 }
 
 .x{
@@ -261,7 +282,9 @@ label{
  border-radius:50%;
  width:36px;
  height:36px;
- font-size:20px
+ font-size:20px;
+ cursor:pointer;
+ flex:none
 }
 
 .preview{
@@ -269,7 +292,8 @@ label{
  border-radius:16px;
  padding:16px;
  white-space:pre-wrap;
- border:1px solid var(--line)
+ border:1px solid var(--line);
+ line-height:1.7
 }
 
 .hidden{
@@ -292,7 +316,7 @@ label{
  margin-top:4px
 }
 
-/* INVOICE PREVIEW */
+/* INVOICE */
 
 .invoice{
  background:#fff;
@@ -307,6 +331,14 @@ label{
  border-bottom:2px solid #173b2b;
  padding-bottom:14px;
  margin-bottom:14px
+}
+
+.invoice-logo{
+ width:70px;
+ height:70px;
+ object-fit:contain;
+ margin:0 auto 8px;
+ display:block
 }
 
 .invoice-brand{
@@ -408,6 +440,14 @@ label{
  color:#6b7772
 }
 
+.danger-zone{
+ border:1px solid #f0c7c3;
+ background:#fff8f7;
+ border-radius:16px;
+ padding:12px;
+ margin-top:15px
+}
+
 @media(min-width:600px){
 
  .grid{
@@ -463,11 +503,16 @@ label{
 
 <header>
  <div class="brand">
-  <div class="logo">✂️</div>
+
+  <div class="logo">
+   <img src="logo.png" alt="Al-Barakah Tailors Logo">
+  </div>
+
   <div>
    <h1 id="businessName">আল-বারাকাহ টেইলার্স</h1>
    <p>Tailoring Management</p>
   </div>
+
  </div>
 </header>
 
@@ -515,7 +560,9 @@ db.settings=db.settings||{
  phone:''
 };
 
-const save=()=>localStorage.setItem(KEY,JSON.stringify(db));
+const save=()=>{
+ localStorage.setItem(KEY,JSON.stringify(db));
+};
 
 const money=n=>'৳ '+Number(n||0).toLocaleString('en-BD');
 
@@ -530,16 +577,44 @@ const esc=s=>String(s??'').replace(
  }[c])
 );
 
-const today=()=>new Date().toISOString().slice(0,10);
+const today=()=>{
+ const d=new Date();
+ return d.getFullYear()+'-'+
+ String(d.getMonth()+1).padStart(2,'0')+'-'+
+ String(d.getDate()).padStart(2,'0');
+};
+
+
+/* =========================
+   UNIQUE ORDER NUMBER
+========================= */
 
 function orderNo(){
 
- return 'ABT-'+
- new Date().getFullYear()+
- '-'+
- String(db.orders.length+1).padStart(6,'0');
+ let year=new Date().getFullYear();
+ let max=0;
 
+ db.orders.forEach(o=>{
+
+  let m=String(o.no||'').match(
+   /^ABT-\d{4}-(\d+)$/
+  );
+
+  if(m){
+   max=Math.max(max,Number(m[1]));
+  }
+
+ });
+
+ return 'ABT-'+
+ year+'-'+
+ String(max+1).padStart(6,'0');
 }
+
+
+/* =========================
+   MODAL
+========================= */
 
 function modal(html){
 
@@ -560,7 +635,9 @@ function closeModal(){
 document.getElementById('modal').addEventListener(
  'click',
  e=>{
-  if(e.target.id==='modal')closeModal();
+  if(e.target.id==='modal'){
+   closeModal();
+  }
  }
 );
 
@@ -628,8 +705,7 @@ function readMeasurements(){
 
 function measurementText(m={}){
 
- return `
-পাঞ্জাবি
+ return `পাঞ্জাবি
 লম্বা: ${m.length||'—'}"
 কাঁধ: ${m.shoulder||'—'}"
 বুক: ${m.chest||'—'}"
@@ -645,21 +721,16 @@ function measurementText(m={}){
 থাই: ${m.thigh||'—'}"
 হাঁটু: ${m.knee||'—'}"
 নিচ: ${m.bottom||'—'}"
-বেল্ট: ${m.belt||'—'}"
-`;
+বেল্ট: ${m.belt||'—'}"`;
 
 }
 
 function hasPanjabi(items){
-
  return items.includes('Panjabi');
-
 }
 
 function hasPajama(items){
-
  return items.includes('Pajama');
-
 }
 
 
@@ -674,24 +745,23 @@ function dashboard(){
  );
 
  const due=db.orders.reduce(
-  (a,o)=>a+Math.max(0,o.due),0
+  (a,o)=>a+Math.max(0,Number(o.due)||0),0
  );
 
  const deliveries=db.orders.filter(
   o=>o.deliveryDate===today() &&
-  o.status!=='Delivered'
+  o.status!=='Delivered' &&
+  o.status!=='Cancelled'
  );
 
  return `
 
  <div class="section-title">
-
   <h2>আজকের সারাংশ</h2>
 
   <span class="muted">
    ${today()}
   </span>
-
  </div>
 
  <div class="grid">
@@ -810,22 +880,24 @@ function orderCard(o){
 
   </div>
 
-  <div class="row" style="margin-top:10px">
+  <div class="actions" style="margin-top:10px">
 
    <button
     class="btn secondary"
     onclick="viewOrder('${o.id}')">
-
     দেখুন
-
    </button>
 
    <button
     class="btn"
     onclick="showInvoice('${o.id}')">
-
     🧾 Invoice
+   </button>
 
+   <button
+    class="btn danger"
+    onclick="deleteOrder('${o.id}')">
+    🗑️ মুছুন
    </button>
 
   </div>
@@ -853,9 +925,7 @@ function render(tab='home'){
  const app=document.getElementById('app');
 
  if(tab==='home'){
-
   app.innerHTML=dashboard();
-
  }
 
  if(tab==='orders'){
@@ -1007,7 +1077,7 @@ function customerCard(c){
  );
 
  let due=os.reduce(
-  (a,o)=>a+Math.max(0,o.due),0
+  (a,o)=>a+Math.max(0,Number(o.due)||0),0
  );
 
  let saved=c.measurement &&
@@ -1035,12 +1105,7 @@ function customerCard(c){
 
   </div>
 
-  <div class="row" style="margin-top:10px">
-
-   <span class="muted">
-    ${os.length}টি অর্ডার ·
-    ${saved?'📏 মাপ সংরক্ষিত':'মাপ নেই'}
-   </span>
+  <div class="actions" style="margin-top:10px">
 
    <button
     class="btn secondary"
@@ -1048,6 +1113,17 @@ function customerCard(c){
     প্রোফাইল
    </button>
 
+   <button
+    class="btn danger"
+    onclick="deleteCustomer('${c.id}')">
+    🗑️ মুছুন
+   </button>
+
+  </div>
+
+  <div class="muted" style="margin-top:8px">
+   ${os.length}টি অর্ডার ·
+   ${saved?'📏 মাপ সংরক্ষিত':'মাপ নেই'}
   </div>
 
  </div>
@@ -1117,9 +1193,7 @@ function newCustomer(){
 
   <h2>নতুন কাস্টমার</h2>
 
-  <button
-   class="x"
-   onclick="closeModal()">
+  <button class="x" onclick="closeModal()">
    ×
   </button>
 
@@ -1169,9 +1243,7 @@ function newCustomer(){
   class="btn gold"
   style="width:100%;margin-top:15px"
   onclick="saveCustomer()">
-
   সেভ করুন
-
  </button>
 
  `);
@@ -1255,9 +1327,7 @@ function newOrder(selectedCustomer=''){
 
   <h2>নতুন অর্ডার</h2>
 
-  <button
-   class="x"
-   onclick="closeModal()">
+  <button class="x" onclick="closeModal()">
    ×
   </button>
 
@@ -1313,33 +1383,22 @@ function newOrder(selectedCustomer=''){
 
  <label>
   অর্ডারের তারিখ
-  <input
-   id="od"
-   type="date"
-   value="${today()}">
+  <input id="od" type="date" value="${today()}">
  </label>
 
  <label>
   ডেলিভারি তারিখ
-  <input
-   id="dd"
-   type="date">
+  <input id="dd" type="date">
  </label>
 
  <label>
   মোট মূল্য
-  <input
-   id="ot"
-   type="number"
-   inputmode="decimal">
+  <input id="ot" type="number" inputmode="decimal">
  </label>
 
  <label>
   অগ্রিম
-  <input
-   id="op"
-   type="number"
-   inputmode="decimal">
+  <input id="op" type="number" inputmode="decimal">
  </label>
 
  <label>
@@ -1426,8 +1485,12 @@ function loadCustomerMeasurement(id){
 
 function toggleMeasureSections(){
 
+ let oi=document.getElementById('oi');
+
+ if(!oi)return;
+
  let items=[
-  ...document.getElementById('oi').selectedOptions
+  ...oi.selectedOptions
  ].map(x=>x.value);
 
  document.getElementById('panjabiBox')
@@ -1545,15 +1608,15 @@ function viewOrder(id){
   x=>x.id===id
  );
 
+ if(!o)return;
+
  modal(`
 
  <div class="sheet-head">
 
   <h2>${esc(o.no)}</h2>
 
-  <button
-   class="x"
-   onclick="closeModal()">
+  <button class="x" onclick="closeModal()">
    ×
   </button>
 
@@ -1572,7 +1635,7 @@ function viewOrder(id){
   </p>
 
   <p>
-   অর্ডার: ${esc(o.orderDate)}
+   অর্ডার: ${esc(o.orderDate||'—')}
    <br>
    ডেলিভারি: ${esc(o.deliveryDate||'—')}
   </p>
@@ -1589,8 +1652,7 @@ function viewOrder(id){
 
    স্ট্যাটাস
 
-   <select
-    onchange="updateStatus('${o.id}',this.value)">
+   <select onchange="updateStatus('${o.id}',this.value)">
 
     ${
      ['Pending','Cutting','Sewing','Ready','Delivered','Cancelled']
@@ -1610,24 +1672,24 @@ function viewOrder(id){
 
  </div>
 
- <div
-  class="actions"
-  style="margin-top:12px">
+ <div class="actions" style="margin-top:12px">
 
   <button
    class="btn gold"
    onclick="showInvoice('${o.id}')">
-
    🧾 Invoice
-
   </button>
 
   <button
    class="btn secondary"
    onclick="shareMeasurement('${o.id}')">
-
    📏 মাপ পাঠান
+  </button>
 
+  <button
+   class="btn danger"
+   onclick="deleteOrder('${o.id}')">
+   🗑️ অর্ডার মুছুন
   </button>
 
  </div>
@@ -1666,6 +1728,8 @@ function updateStatus(id,s){
   x=>x.id===id
  );
 
+ if(!o)return;
+
  o.status=s;
 
  save();
@@ -1673,6 +1737,42 @@ function updateStatus(id,s){
  closeModal();
 
  render('orders');
+
+}
+
+
+/* =========================
+   DELETE ORDER
+========================= */
+
+function deleteOrder(id){
+
+ let o=db.orders.find(
+  x=>x.id===id
+ );
+
+ if(!o)return;
+
+ let ok=confirm(
+  'আপনি কি এই অর্ডারটি মুছে ফেলতে চান?\n\n'+
+  'অর্ডার: '+o.no+'\n'+
+  'কাস্টমার: '+o.customerName+'\n\n'+
+  'এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।'
+ );
+
+ if(!ok)return;
+
+ db.orders=db.orders.filter(
+  x=>x.id!==id
+ );
+
+ save();
+
+ closeModal();
+
+ render('orders');
+
+ alert('অর্ডারটি মুছে ফেলা হয়েছে।');
 
 }
 
@@ -1716,6 +1816,11 @@ function invoiceHTML(o){
 
   <div class="invoice-head">
 
+   <img
+    src="logo.png"
+    class="invoice-logo"
+    alt="Logo">
+
    <div class="invoice-brand">
     ${esc(business)}
    </div>
@@ -1741,51 +1846,33 @@ function invoiceHTML(o){
   <div class="invoice-info">
 
    <div class="invoice-info-box">
-
     <small>Invoice No.</small>
-
     <b>${esc(o.no)}</b>
-
    </div>
 
    <div class="invoice-info-box">
-
     <small>Status</small>
-
     <b>${esc(o.status)}</b>
-
    </div>
 
    <div class="invoice-info-box">
-
     <small>Customer</small>
-
     <b>${esc(o.customerName)}</b>
-
    </div>
 
    <div class="invoice-info-box">
-
     <small>Mobile</small>
-
     <b>${esc(o.phone||'—')}</b>
-
    </div>
 
    <div class="invoice-info-box">
-
     <small>Order Date</small>
-
     <b>${esc(o.orderDate||'—')}</b>
-
    </div>
 
    <div class="invoice-info-box">
-
     <small>Delivery Date</small>
-
     <b>${esc(o.deliveryDate||'—')}</b>
-
    </div>
 
   </div>
@@ -1793,19 +1880,15 @@ function invoiceHTML(o){
   <table class="invoice-table">
 
    <thead>
-
     <tr>
      <th>#</th>
      <th>Item</th>
      <th>Type</th>
     </tr>
-
    </thead>
 
    <tbody>
-
     ${itemRows}
-
    </tbody>
 
   </table>
@@ -1834,13 +1917,9 @@ function invoiceHTML(o){
    ?
    `
    <div class="invoice-note">
-
     <b>বিশেষ নির্দেশনা</b>
-
     <br>
-
     ${esc(o.notes)}
-
    </div>
    `
    :
@@ -1878,9 +1957,7 @@ function showInvoice(id){
 
   <h2>🧾 Invoice</h2>
 
-  <button
-   class="x"
-   onclick="closeModal()">
+  <button class="x" onclick="closeModal()">
    ×
   </button>
 
@@ -1892,24 +1969,18 @@ function showInvoice(id){
 
  </div>
 
- <div
-  class="actions"
-  style="margin-top:12px">
+ <div class="actions" style="margin-top:12px">
 
   <button
    class="btn gold"
    onclick="printInvoice('${o.id}')">
-
    🖨️ Print / PDF
-
   </button>
 
   <button
    class="btn"
    onclick="shareInvoice('${o.id}')">
-
    📤 Share
-
   </button>
 
  </div>
@@ -1920,7 +1991,7 @@ function showInvoice(id){
 
 
 /* =========================
-   PRINT INVOICE
+   PRINT
 ========================= */
 
 function printInvoice(id){
@@ -1962,8 +2033,7 @@ function shareInvoice(id){
 
  if(!o)return;
 
- let text=
- `🧾 ${db.settings.business}
+ let text=`🧾 ${db.settings.business}
 
 INVOICE
 Invoice No: ${o.no}
@@ -2002,34 +2072,28 @@ function shareMeasurement(id){
 
  if(!o)return;
 
- shareText(
-
- `📏 ${db.settings.business}
+ let text=`📏 ${db.settings.business}
 
 Customer: ${o.customerName}
 Order: ${o.no}
 
-${measurementText(o.measurement||{})}`
+${measurementText(o.measurement||{})}`;
 
- );
+ shareText(text);
 
 }
 
 
 /* =========================
    SHARE TEXT
-   FIXED: \n WILL NOT APPEAR
+   \n এবং /n FIX
 ========================= */
 
 async function shareText(text){
 
- /*
-  যদি কোনো কারণে মেসেজের মধ্যে
-  literal "\n" চলে আসে,
-  তাহলে সেটিকে আসল line break-এ
-  পরিবর্তন করা হবে।
- */
- text=String(text).replace(/\\n/g,'\n');
+ text=String(text)
+ .replace(/\\n/g,'\n')
+ .replace(/\/n/g,'\n');
 
  if(navigator.share){
 
@@ -2075,6 +2139,8 @@ function viewCustomer(id){
   x=>x.id===id
  );
 
+ if(!c)return;
+
  let os=db.orders.filter(
   o=>o.customerId===id
  );
@@ -2085,9 +2151,7 @@ function viewCustomer(id){
 
   <h2>${esc(c.name)}</h2>
 
-  <button
-   class="x"
-   onclick="closeModal()">
+  <button class="x" onclick="closeModal()">
    ×
   </button>
 
@@ -2114,9 +2178,7 @@ function viewCustomer(id){
   <button
    class="btn secondary"
    onclick="editCustomer('${c.id}')">
-
    ✏️ মাপ এডিট
-
   </button>
 
  </div>
@@ -2134,9 +2196,7 @@ function viewCustomer(id){
   <button
    class="btn"
    onclick="closeModal();newOrder('${c.id}')">
-
    + নতুন অর্ডার
-
   </button>
 
  </div>
@@ -2151,7 +2211,75 @@ function viewCustomer(id){
 
  </div>
 
+ <div class="danger-zone">
+
+  <b>⚠️ কাস্টমার মুছে ফেলা</b>
+
+  <p class="muted">
+   এই কাস্টমারের কোনো অর্ডার থাকলে আগে সেই অর্ডারগুলো মুছতে হবে।
+  </p>
+
+  <button
+   class="btn danger"
+   style="width:100%"
+   onclick="deleteCustomer('${c.id}')">
+   🗑️ কাস্টমার মুছুন
+  </button>
+
+ </div>
+
  `);
+
+}
+
+
+/* =========================
+   DELETE CUSTOMER
+========================= */
+
+function deleteCustomer(id){
+
+ let c=db.customers.find(
+  x=>x.id===id
+ );
+
+ if(!c)return;
+
+ let relatedOrders=db.orders.filter(
+  o=>o.customerId===id
+ );
+
+ if(relatedOrders.length){
+
+  alert(
+   'এই কাস্টমারের '+relatedOrders.length+
+   'টি অর্ডার আছে।\n\n'+
+   'কাস্টমার মুছতে হলে আগে তার অর্ডারগুলো মুছে দিন।'
+  );
+
+  return;
+
+ }
+
+ let ok=confirm(
+  'আপনি কি "'+c.name+
+  '" কাস্টমারকে মুছে ফেলতে চান?\n\n'+
+  'এই কাজটি পূর্বাবস্থায় ফেরানো যাবে না।'
+ );
+
+ if(!ok)return;
+
+ db.customers=db.customers.filter(
+  x=>x.id!==id
+ );
+
+ save();
+
+ closeModal();
+
+ render('customers');
+
+ alert('কাস্টমারটি মুছে ফেলা হয়েছে।');
 
 }
 
@@ -2166,46 +2294,37 @@ function editCustomer(id){
   x=>x.id===id
  );
 
+ if(!c)return;
+
  modal(`
 
  <div class="sheet-head">
 
   <h2>কাস্টমার মাপ</h2>
 
-  <button
-   class="x"
-   onclick="closeModal()">
+  <button class="x" onclick="closeModal()">
    ×
   </button>
 
  </div>
 
  <label>
-
   নাম*
-
   <input
    id="en"
    value="${esc(c.name)}">
-
  </label>
 
  <label>
-
   মোবাইল
-
   <input
    id="ep"
    value="${esc(c.phone||'')}">
-
  </label>
 
  <label>
-
   ঠিকানা
-
   <textarea id="ea">${esc(c.address||'')}</textarea>
-
  </label>
 
  <div class="measure-title">
@@ -2224,9 +2343,7 @@ function editCustomer(id){
   class="btn gold"
   style="width:100%;margin-top:15px"
   onclick="updateCustomer('${c.id}')">
-
   সেভ করুন
-
  </button>
 
  `);
@@ -2238,6 +2355,8 @@ function updateCustomer(id){
  let c=db.customers.find(
   x=>x.id===id
  );
+
+ if(!c)return;
 
  c.name=
   document.getElementById('en')
@@ -2252,6 +2371,13 @@ function updateCustomer(id){
 
  c.measurement=
   readMeasurements();
+
+ if(!c.name){
+
+  alert('নাম দিন');
+  return;
+
+ }
 
  save();
 
@@ -2269,11 +2395,11 @@ function updateCustomer(id){
 function reports(){
 
  let sales=db.orders.reduce(
-  (a,o)=>a+o.total,0
+  (a,o)=>a+(Number(o.total)||0),0
  );
 
  let paid=db.orders.reduce(
-  (a,o)=>a+o.paid,0
+  (a,o)=>a+(Number(o.paid)||0),0
  );
 
  modal(`
@@ -2282,9 +2408,7 @@ function reports(){
 
   <h2>📊 রিপোর্ট</h2>
 
-  <button
-   class="x"
-   onclick="closeModal()">
+  <button class="x" onclick="closeModal()">
    ×
   </button>
 
@@ -2331,9 +2455,7 @@ function settings(){
 
   <h2>⚙️ সেটিংস</h2>
 
-  <button
-   class="x"
-   onclick="closeModal()">
+  <button class="x" onclick="closeModal()">
    ×
   </button>
 
@@ -2362,19 +2484,34 @@ function settings(){
  <button
   class="btn gold"
   style="width:100%;margin-top:15px"
-  onclick="
-   db.settings.business=sb.value;
-   db.settings.phone=sp.value;
-   save();
-   document.getElementById('businessName').textContent=db.settings.business;
-   closeModal();
-  ">
+  onclick="saveSettings()">
 
   সেভ করুন
 
  </button>
 
  `);
+
+}
+
+function saveSettings(){
+
+ let b=document.getElementById('sb').value.trim();
+ let p=document.getElementById('sp').value.trim();
+
+ db.settings.business=
+  b||'আল-বারাকাহ টেইলার্স';
+
+ db.settings.phone=p;
+
+ save();
+
+ document.getElementById('businessName').textContent=
+  db.settings.business;
+
+ closeModal();
+
+ render('home');
 
 }
 
@@ -2385,22 +2522,23 @@ function settings(){
 
 function backup(){
 
- let a=document.createElement('a');
-
- a.href=URL.createObjectURL(
-
-  new Blob(
-   [JSON.stringify(db,null,2)],
-   {type:'application/json'}
-  )
-
+ let blob=new Blob(
+  [JSON.stringify(db,null,2)],
+  {type:'application/json'}
  );
 
+ let url=URL.createObjectURL(blob);
+
+ let a=document.createElement('a');
+
+ a.href=url;
  a.download='al-barakah-tailors-backup.json';
 
+ document.body.appendChild(a);
  a.click();
+ a.remove();
 
- URL.revokeObjectURL(a.href);
+ URL.revokeObjectURL(url);
 
 }
 
@@ -2419,10 +2557,17 @@ function restore(file){
 
   try{
 
-   db=JSON.parse(r.result);
+   let data=JSON.parse(r.result);
+
+   if(!data || typeof data!=='object'){
+    throw new Error();
+   }
+
+   db=data;
 
    db.customers=db.customers||[];
    db.orders=db.orders||[];
+
    db.settings=db.settings||{
     business:'আল-বারাকাহ টেইলার্স',
     phone:''
@@ -2430,11 +2575,11 @@ function restore(file){
 
    save();
 
-   render('home');
-
    document.getElementById('businessName').textContent=
     db.settings.business ||
     'আল-বারাকাহ টেইলার্স';
+
+   render('home');
 
    alert('Backup restore হয়েছে।');
 
@@ -2456,7 +2601,9 @@ function restore(file){
 ========================= */
 
 document.querySelectorAll('.nav').forEach(
- b=>b.onclick=()=>render(b.dataset.tab)
+ b=>{
+  b.onclick=()=>render(b.dataset.tab);
+ }
 );
 
 document.getElementById('businessName').textContent=
