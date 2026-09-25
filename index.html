@@ -24,8 +24,7 @@
 
 body{
  margin:0;
- font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Bengali",
- "Noto Sans",sans-serif;
+ font-family:-apple-system,BlinkMacSystemFont,"Noto Sans Bengali","Noto Sans",sans-serif;
  background:var(--bg);
  color:var(--ink);
  padding-bottom:82px
@@ -189,8 +188,7 @@ main{
  border-top:1px solid var(--line);
  display:grid;
  grid-template-columns:repeat(4,1fr);
- padding:8px max(8px,env(safe-area-inset-left))
- calc(8px + env(safe-area-inset-bottom));
+ padding:8px max(8px,env(safe-area-inset-left)) calc(8px + env(safe-area-inset-bottom));
  z-index:5
 }
 
@@ -1701,9 +1699,10 @@ function invoiceHTML(o){
 
    <td>${esc(item)}</td>
 
-   <td>${item==='Panjabi'?'পাঞ্জাবি':''}
-       ${item==='Pajama'?'পায়জামা':''}
-       ${item==='Shirt'?'শার্ট':''}
+   <td>
+    ${item==='Panjabi'?'পাঞ্জাবি':''}
+    ${item==='Pajama'?'পায়জামা':''}
+    ${item==='Shirt'?'শার্ট':''}
    </td>
 
   </tr>
@@ -2001,6 +2000,8 @@ function shareMeasurement(id){
   x=>x.id===id
  );
 
+ if(!o)return;
+
  shareText(
 
  `📏 ${db.settings.business}
@@ -2014,7 +2015,21 @@ ${measurementText(o.measurement||{})}`
 
 }
 
+
+/* =========================
+   SHARE TEXT
+   FIXED: \n WILL NOT APPEAR
+========================= */
+
 async function shareText(text){
+
+ /*
+  যদি কোনো কারণে মেসেজের মধ্যে
+  literal "\n" চলে আসে,
+  তাহলে সেটিকে আসল line break-এ
+  পরিবর্তন করা হবে।
+ */
+ text=String(text).replace(/\\n/g,'\n');
 
  if(navigator.share){
 
@@ -2029,11 +2044,21 @@ async function shareText(text){
 
  }else{
 
-  await navigator.clipboard?.writeText(text);
+  try{
 
-  alert(
-   'মেসেজ কপি করা হয়েছে। WhatsApp/Messenger-এ Paste করুন।'
-  );
+   await navigator.clipboard.writeText(text);
+
+   alert(
+    'মেসেজ কপি করা হয়েছে। WhatsApp/Messenger-এ Paste করুন।'
+   );
+
+  }catch(e){
+
+   alert(
+    'মেসেজ কপি করা যায়নি। অনুগ্রহ করে আবার চেষ্টা করুন।'
+   );
+
+  }
 
  }
 
@@ -2396,9 +2421,20 @@ function restore(file){
 
    db=JSON.parse(r.result);
 
+   db.customers=db.customers||[];
+   db.orders=db.orders||[];
+   db.settings=db.settings||{
+    business:'আল-বারাকাহ টেইলার্স',
+    phone:''
+   };
+
    save();
 
    render('home');
+
+   document.getElementById('businessName').textContent=
+    db.settings.business ||
+    'আল-বারাকাহ টেইলার্স';
 
    alert('Backup restore হয়েছে।');
 
